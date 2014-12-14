@@ -26,7 +26,7 @@ frig(D,S,C,Vars):-
         append(Vars, L),
         costM(Vars,C, Tc),
         reset_timer,
-        labeling([minimize(Tc)], L),
+        labeling([bisect,minimize(Tc)], L),
         print_time,
         fd_statistics.
 reset_timer :- statistics(walltime,_).  
