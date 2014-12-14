@@ -27,10 +27,40 @@ frig(D,S,C,Vars):-
         costM(Vars,C, Tc),
         reset_timer,
         labeling([bisect,minimize(Tc)], L),
+        print_end(S, D,Vars),
         print_time,
         fd_statistics.
+
 reset_timer :- statistics(walltime,_).  
 print_time :-
         statistics(walltime,[_,T]),
         TS is ((T//10)*10)/1000,
         nl, write('Time: '), write(TS), write('s'), nl, nl.
+
+
+print_end(L1,L2,Vars):-
+        write('\t\t-------------------------------------------------'),nl,
+        write('\tS\\D'),
+        print_bar(L2),
+        write('\t|'),
+        nl,
+        write('-----------------------------------------------------------------'),nl,
+        print_tab(Vars,L1).
+print_bar([]).
+print_bar([H|T]) :-
+        write('\t|\t'),
+        write(H),
+        print_bar(T).
+print_line([]).
+print_line([H|T]) :-
+        write('\t|\t'),
+        write(H),
+        print_line(T).
+print_tab([],[]).
+print_tab([H|T],[L1|R1]) :-
+        write('|\t'),
+        write(L1),
+        print_line(H), write('\t|'), 
+        nl,write('-----------------------------------------------------------------'),
+        nl,
+        print_tab(T,R1).
