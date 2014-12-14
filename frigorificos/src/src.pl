@@ -37,14 +37,23 @@ print_time :-
         TS is ((T//10)*10)/1000,
         nl, write('Time: '), write(TS), write('s'), nl, nl.
 
+print_sep(0).
+print_sep(N):-
+        write('----------------'),
+        N1 is N - 1,
+        print_sep(N1).
+        
 
 print_end(L1,L2,Vars):-
-        write('\t\t-------------------------------------------------'),nl,
+        length(L2,N),
+        write('\t\t'),
+        print_sep(N),nl,
         write('\tS\\D'),
         print_bar(L2),
         write('\t|'),
         nl,
-        write('-----------------------------------------------------------------'),nl,
+        print_sep(N),
+        write('----------------'),nl,
         print_tab(Vars,L1).
 print_bar([]).
 print_bar([H|T]) :-
@@ -61,6 +70,9 @@ print_tab([H|T],[L1|R1]) :-
         write('|\t'),
         write(L1),
         print_line(H), write('\t|'), 
-        nl,write('-----------------------------------------------------------------'),
+        nl,
+        length(H,N),
+        N1 is N +1,
+        print_sep(N1),
         nl,
         print_tab(T,R1).
