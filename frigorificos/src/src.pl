@@ -21,8 +21,16 @@ frig(D,S,C,Vars):-
         length(Vars,Sn),
         restrict(Vars,S, #=< ,Dn),
         transpose(Vars,VarsT),
-        restrict(VarsT,D, #=,Dn),
+        restrict(VarsT,D, #=,Sn),
         transpose(Vars,VarsT),
         append(Vars, L),
-        costM(Vars, C, Tc),
-        labeling([minimize(Tc)], L).
+        costM(Vars,C, Tc),
+        reset_timer,
+        labeling([minimize(Tc)], L),
+        print_time,
+        fd_statistics.
+reset_timer :- statistics(walltime,_).  
+print_time :-
+        statistics(walltime,[_,T]),
+        TS is ((T//10)*10)/1000,
+        nl, write('Time: '), write(TS), write('s'), nl, nl.
